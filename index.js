@@ -1,20 +1,34 @@
 
 window.addEventListener("onload", init());
 
+function isTouchDevice() {
+    return ('ontouchstart' in document.documentElement);
+}
+console.log('isTouchDevice? ', isTouchDevice());
+
+
 function init() {
     
     let canvas = initFullScreenCanvas("mainCanvas");
     let ctx = canvas.getContext("2d");
 
-    canvas.addEventListener("touchstart", function (e) {
-        for (let i = 0; i < e.targetTouches.length; i++) {
-            drawBullet(
-                e.targetTouches[i].pageX,
-                e.targetTouches[i].pageY, ctx);
-        }
-        e.stopPropagation();
-        e.preventDefault();
-    }, false);
+    if (isTouchDevice()) {
+        canvas.addEventListener("touchstart", function (e) {
+            for (let i = 0; i < e.targetTouches.length; i++) {
+                drawBullet(
+                    e.targetTouches[i].pageX - canvas.offsetLeft,
+                    e.targetTouches[i].pageY - canvas.offsetTop, ctx);
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        }, false);
+    } else {
+       canvas.addEventListener("mousedown", function(e){
+           drawBullet(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop, ctx);
+           e.stopPropagation();
+           e.preventDefault();
+       }, false); 
+    }
 }
 
 function drawBullet(x, y, ctx) {
