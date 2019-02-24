@@ -30,7 +30,7 @@ function init() {
        }, false); 
     }
 }
-
+// drawing bullet in position x,y on ctx element
 function drawBullet(x, y, ctx) {
     ctx.fillStyle = "darkred";
     ctx.strokeStyle = "black";
